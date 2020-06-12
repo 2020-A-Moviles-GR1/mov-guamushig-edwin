@@ -65,28 +65,3 @@ fun calcularSueldo(sueldo: Double, tasa: Double = 8.5, esEspecial: Int? = null):
     }
 }
 
-
-fun arreglos() {
-
-    val myArray: ArrayList<String> = arrayListOf<String>()
-    myArray.add("Edwin");
-    myArray.add("Paul");
-    myArray.add("Vanessa");
-    myArray.add("Teodoro")
-
-    myArray.addAll(listOf("Pedro", "Maria", "Paquita"));
-
-    println(myArray)
-
-    val indice = myArray.indexOf("Maria");
-    myArray[indice] = "Camilitaa";
-    println(myArray)
-
-    myArray.removeAt(indice)
-    println(myArray)
-
-    val numbers = listOf(1, 2, 3)
-    val res = numbers.map { it * it }
-    println(res)
-}
-
