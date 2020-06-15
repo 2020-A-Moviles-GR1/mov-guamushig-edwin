@@ -2,11 +2,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 fun main(args: Array<String>) {
-    varibles()
-    sentencias(10)
-    println(sentenciaWhen(750.00))
-    println(sentenciaWhen(tasa = 2.00, sueldo = 300.00));
-    println(calcularSueldo(485.00, 11.5))
+//    varibles()
+//    sentencias(10)
+//    println(sentenciaWhen(750.00))
+//    println(sentenciaWhen(tasa = 2.00, sueldo = 300.00));
+//    println(calcularSueldo(485.00, 11.5))
+    arreglos()
 }
 
 fun varibles() {
@@ -67,26 +68,56 @@ fun calcularSueldo(sueldo: Double, tasa: Double = 8.5, esEspecial: Int? = null):
 
 
 fun arreglos() {
+    val arrayConstante: Array<String> = arrayOf("a", "b", "c")
+    val arrayVariable: ArrayList<String> = arrayListOf<String>()
 
-    val myArray: ArrayList<String> = arrayListOf<String>()
-    myArray.add("Edwin");
-    myArray.add("Paul");
-    myArray.add("Vanessa");
-    myArray.add("Teodoro")
+    arrayVariable.add("Edwin");
+    arrayVariable.add("Paul");
+    arrayVariable.add("Vanessa");
+    arrayVariable.add("Teodoro")
 
-    myArray.addAll(listOf("Pedro", "Maria", "Paquita"));
+    // recorrer arreglos
+    arrayVariable.forEach {
+//        println("Valor dentro del arreglo ${it}")
+    }
+    arrayVariable.forEach { valor ->
+//        println("Recorrer de otra forma ${valor}")
+    }
 
-    println(myArray)
+    val arregloNumeros = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    // operadores de arreglos
+    arregloNumeros.forEach { valor ->
+//        println("Valor de iteracion ${valor}")
+    }
 
-    val indice = myArray.indexOf("Maria");
-    myArray[indice] = "Camilitaa";
-    println(myArray)
+    val modificado = arregloNumeros.map {
+        valor ->
+        val nuevo = valor * 5
+        return@map nuevo
+    }
+    println(modificado)
 
-    myArray.removeAt(indice)
-    println(myArray)
+    val negataivos = arregloNumeros.map { it * -1 }
+    println(negataivos)
 
+    val filtrado = arregloNumeros.filter {
+        valor ->
+        val nuevo = valor > 2
+        return@filter nuevo
+    }
+    println(filtrado)
+
+    val reducido = arregloNumeros.reduce{
+        acumulador, elemento ->
+        acumulador + elemento
+    }
+    println(reducido)
+
+    arrayVariable.addAll(listOf("Pedro", "Maria", "Paquita"));
+    val indice = arrayVariable.indexOf("Maria");
+    arrayVariable[indice] = "Camilitaa";
+    arrayVariable.removeAt(indice)
     val numbers = listOf(1, 2, 3)
     val res = numbers.map { it * it }
-    println(res)
 }
 
