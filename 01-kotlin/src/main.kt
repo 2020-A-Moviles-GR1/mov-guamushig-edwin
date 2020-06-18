@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
 //    println(sentenciaWhen(750.00))
 //    println(sentenciaWhen(tasa = 2.00, sueldo = 300.00));
 //    println(calcularSueldo(485.00, 11.5))
-    arreglos()
+//    arreglos()
 }
 
 fun varibles() {
@@ -140,43 +140,9 @@ fun arreglos() {
     println(encontre)
 }
 
-fun bucles() {
-    var myArray: List<Int> = arrayListOf(1, 2, 3, 4, 5, 6);
-    var myMap: MutableMap<String, Int> = mutableMapOf("Juan" to 2, "Emilio" to 56)
-    println(myArray)
-    println(myMap)
-
-    for (myString in myArray) {
-        println(myString)
-    }
-
-    for (element in myMap) {
-        println("${element.key} es la llave y ${element.value} es el valor")
-    }
-
-    for (x in 0 until 5) {
-        print("${x} - ")
-    }
-
-    for (x in 0 until 10 step 2) {
-        print("${x} - ")
-    }
-    println("\n")
-    for (x in 10 downTo 0) {
-        print("${x} - ")
-    }
-}
-
-fun valoresNull() {
-    var nulo: String? = "cosaaa";
-    println(nulo?.length)
-    nulo = null;
-    println(nulo?.length) // !! obliga que no sea nula
-
-    var stringsito: String? = "Este es un mesanje";
-    stringsito?.let {
-        println(it)
-    } ?: run {
-        println("Fueraa")
-    }
+abstract class miPrimeraClaseAbstracta(
+    num1: Int, // implicitamente las variables son publicas, si es necesario agregar "private" o "protected"
+    num2: Int
+) {
+    constructor() {}
 }
