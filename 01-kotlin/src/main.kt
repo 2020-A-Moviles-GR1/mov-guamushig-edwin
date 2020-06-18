@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
 //    println(sentenciaWhen(750.00))
 //    println(sentenciaWhen(tasa = 2.00, sueldo = 300.00));
 //    println(calcularSueldo(485.00, 11.5))
-    arreglos()
+//    arreglos()
 }
 
 fun varibles() {
@@ -90,8 +90,7 @@ fun arreglos() {
 //        println("Valor de iteracion ${valor}")
     }
 
-    val modificado = arregloNumeros.map {
-        valor ->
+    val modificado = arregloNumeros.map { valor ->
         val nuevo = valor * 5
         return@map nuevo
     }
@@ -100,24 +99,59 @@ fun arreglos() {
     val negataivos = arregloNumeros.map { it * -1 }
     println(negataivos)
 
-    val filtrado = arregloNumeros.filter {
-        valor ->
+    val filtrado = arregloNumeros.filter { valor ->
         val nuevo = valor > 2
         return@filter nuevo
     }
     println(filtrado)
 
-    val reducido = arregloNumeros.reduce{
-        acumulador, elemento ->
+    val reducido = arregloNumeros.reduce { acumulador, elemento ->
         acumulador + elemento
     }
     println(reducido)
+
+    val fold = arregloNumeros.fold(3, { acumulador, elemento ->
+        acumulador + elemento
+    })
+    println(fold)
 
     arrayVariable.addAll(listOf("Pedro", "Maria", "Paquita"));
     val indice = arrayVariable.indexOf("Maria");
     arrayVariable[indice] = "Camilitaa";
     arrayVariable.removeAt(indice)
-    val numbers = listOf(1, 2, 3)
+    val numbers = listOf(7, 4, 9, 6, 3, 1, 0)
     val res = numbers.map { it * it }
+    val ordenado = numbers.sorted()
+    val encontre = numbers.find { it == 14 }
+
+    val encontreTF = numbers.any { it ->
+        val menor = it > 5
+        return@any menor
+    }
+    println(encontreTF)
+
+    val encontreT = numbers.all { it ->
+        val menor = it > 5
+        return@all menor
+    }
+    println(encontreT)
+
+    println(ordenado)
+    println(encontre)
 }
 
+abstract class Numeros( // val nuevosNumeros = Numeros(1,2)
+    protected val numeroUno: Int,
+    protected val numeroDos: Int
+) {
+}
+
+class Suma(
+    uno: Int,
+    dos: Int
+) : Numeros(uno, dos) {
+    fun sumar():Int{
+        // this.uno
+        return this.numeroUno + this.numeroDos
+    }
+}
