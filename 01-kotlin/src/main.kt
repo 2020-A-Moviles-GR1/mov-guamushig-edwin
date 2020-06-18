@@ -140,9 +140,18 @@ fun arreglos() {
     println(encontre)
 }
 
-abstract class miPrimeraClaseAbstracta(
-    num1: Int, // implicitamente las variables son publicas, si es necesario agregar "private" o "protected"
-    num2: Int
+abstract class Numeros( // val nuevosNumeros = Numeros(1,2)
+    protected val numeroUno: Int,
+    protected val numeroDos: Int
 ) {
-    constructor() {}
+}
+
+class Suma(
+    uno: Int,
+    dos: Int
+) : Numeros(uno, dos) {
+    fun sumar():Int{
+        // this.uno
+        return this.numeroUno + this.numeroDos
+    }
 }
