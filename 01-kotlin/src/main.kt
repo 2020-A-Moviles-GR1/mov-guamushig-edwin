@@ -13,11 +13,20 @@ fun main(args: Array<String>) {
 //    val nuevoNumeroTres = sumarDosNumeros(5, null);
 //    val nuevoNumeroCuatro = sumarDosNumeros(null, null);
 
-    println(sumarDosNumeros.arregloNumeros)
-    sumarDosNumeros.agregarNumero(69)
-    println(sumarDosNumeros.arregloNumeros)
-    sumarDosNumeros.eliminarNumero(0)
-    println(sumarDosNumeros.arregloNumeros)
+//    println(sumarDosNumeros.arregloNumeros)
+//    sumarDosNumeros.agregarNumero(69)
+//    println(sumarDosNumeros.arregloNumeros)
+//    sumarDosNumeros.eliminarNumero(0)
+//    println(sumarDosNumeros.arregloNumeros)
+
+    var nombre: String? = null;
+    nombre = "Edwin"
+    mostrarNombre(nombre)
+
+}
+
+fun mostrarNombre(nombre: String?) {
+    println("Longitud de nombre es ${nombre?.length}")
 }
 
 fun varibles() {
