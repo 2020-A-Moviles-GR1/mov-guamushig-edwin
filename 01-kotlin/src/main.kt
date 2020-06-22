@@ -141,8 +141,8 @@ fun arreglos() {
 }
 
 abstract class Numeros( // val nuevosNumeros = Numeros(1,2)
-    protected val numeroUno: Int,
-    protected val numeroDos: Int
+    protected var numeroUno: Int,
+    protected var numeroDos: Int
 ) {
 }
 
@@ -150,8 +150,34 @@ class Suma(
     uno: Int,
     dos: Int
 ) : Numeros(uno, dos) {
-    fun sumar():Int{
+    fun sumar(): Int {
         // this.uno
         return this.numeroUno + this.numeroDos
+    }
+}
+
+class sumarDosNumeros(uno: Int, dos: Int) : Numeros(uno, dos) {
+    constructor(uno: Int?, dos: Int) {
+        val numUno = if (uno == null) 0 else uno
+        this.numeroUno = numUno
+        this.numeroDos = dos
+        println("Constructor 1")
+    }
+
+    constructor(uno: Int, dos: Int?) {
+        val numDos = if (dos == null) 0 else dos
+        this.numeroUno = uno
+        this.numeroDos = numDos
+        println("Constructor 2")
+
+    }
+
+    constructor(uno: Int?, dos: Int?) {
+        val numDos = if (dos == null) 0 else dos
+        val numUno = if (uno == null) 0 else uno
+        this.numeroUno = numUno
+        this.numeroDos = numDos
+        println("Constructor 3")
+
     }
 }
