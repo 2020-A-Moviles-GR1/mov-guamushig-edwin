@@ -1,0 +1,44 @@
+[
+  {
+    "nombre": "Politecnica",
+    "fundacion": "Jun 28, 2020, 12:36:02 AM",
+    "categories": [
+      {
+        "nombre": "Edwin",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      },
+      {
+        "nombre": "Edwin",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      },
+      {
+        "nombre": "Paul",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      }
+    ]
+  },
+  {
+    "nombre": "Politecnicass",
+    "fundacion": "Jun 28, 2020, 12:36:02 AM",
+    "categories": [
+      {
+        "nombre": "Edwin",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      },
+      {
+        "nombre": "Edwin",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      },
+      {
+        "nombre": "Paul",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      }
+    ]
+  }
+]
