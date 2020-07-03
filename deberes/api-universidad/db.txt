@@ -36,7 +36,7 @@
         "tieneEnfermedad": false
       },
       {
-        "nombre": "Paul",
+        "nombre": "Vanessa",
         "estadoCivil": "soltero",
         "tieneEnfermedad": false
       },
