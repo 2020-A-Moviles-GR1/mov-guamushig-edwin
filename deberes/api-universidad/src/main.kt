@@ -4,66 +4,38 @@ import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 fun main(args: Array<String>) {
-    val gson = Gson()
-    val gsonPretty = GsonBuilder().setPrettyPrinting().create()
 
-//
-    val estudianteT = Estudiante("Vanessa", Estudiante.ESTADO_CIVIL.soltero, false)
+    val estudiante = Estudiante("Vanessa", Estudiante.ESTADO_CIVIL.soltero, false)
     val sale: List<Universida> = listOf(
-        Universida("Salesiana", "1955", listOf(estudianteT))
+        Universida("Salesiana", "1955", mutableListOf(estudiante))
     );
 
-//    val estudianteX = Estudiante("Katherine", Estudiante.ESTADO_CIVIL.soltero, false)
-//    val cato: List<Universida> = listOf(
-//        Universida("Catolica", "1955", listOf(estudianteX))
-//    );
-//
-//    val universida = poli + cato + sale
-//
-//    val jsonTutsList: String = gson.toJson(universida)
-//
-//    val jsonTutsListPretty: String = gsonPretty.toJson(universida)
-//    escribirEnArchivo(jsonTutsListPretty)
-    val jsonList = leerArchivo()
-
-    val mutableListTutorialType = object : TypeToken<MutableList<Universida>>() {}.type
-    var datos: MutableList<Universida> = gson.fromJson(jsonList, mutableListTutorialType)
-
-    val respuestita = datos.forEach {
-        universida: Universida ->
-        val some = universida.estudiantes
-        print(estudianteT)
-        print(universida.estudiantes)
-        print(some)
-    }
-}
-
-fun escribirEnArchivo(dato: String) {
-    try {
-        File("db.txt").printWriter().use { out ->
-            out.println(dato)
+    val datos = leerArchivo()
+    val resultado = buscarEstudiante("estadoCivil", Estudiante.ESTADO_CIVIL.casado, datos)
+    val limpio = resultado.filter { it != null }
+    limpio.forEach { list ->
+        val universidad: Universida = list?.get(0) as Universida
+        val arregloEstudiantes: List<Estudiante> = list?.get(1) as List<Estudiante>
+        val nombresEstudiantes = arregloEstudiantes.map { estudiante: Estudiante ->
+            val arregloDatos = mutableMapOf<String, Any>();
+            arregloDatos.put("Nombre", estudiante.nombre)
+            arregloDatos.put("Estado Civil", estudiante.estadoCivil)
+            return@map arregloDatos
         }
-        File("db.json").printWriter().use { out ->
-            out.println(dato)
-        }
-    } catch (e: IOException) {
-        print(e)
+        println("Universidad: ${universidad.nombre}")
+        println("Estudiantes coinciden: ${nombresEstudiantes}")
+        println("----------------------------------------------------------------------------------------")
     }
+//    resultado.forEach {
+//        universida: Universida? ->
+//        println("-------------------------------")
+//        println("Nombre: ${universida?.nombre}")
+//        println("Fundacion: ${universida?.fundacion}")
+//    }
 }
 
-fun leerArchivo(): String {
-    val inputStream: InputStream = File("db.txt").inputStream()
-    val inputString = inputStream.bufferedReader().use { it.readText() }
-    return inputString
-//    val mapper = jacksonObjectMapper()
-//    mapper.registerKotlinModule()
-//    mapper.registerModule(JavaTimeModule())
-//
-//    val jsonString: String = File("./src/main/resources/db.json").readText(Charsets.UTF_8)
-//    val jsonTextList: List<Universida> = mapper.readValue<List<Universida>>(jsonString)
-}
+
+

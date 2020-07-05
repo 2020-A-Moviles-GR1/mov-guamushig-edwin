@@ -9,18 +9,12 @@
         "tieneEnfermedad": false
       },
       {
-        "nombre": "Paul",
+        "nombre": "Edwin",
         "estadoCivil": "soltero",
         "tieneEnfermedad": false
-      }
-    ]
-  },
-  {
-    "nombre": "Catolica",
-    "fundacion": "1955",
-    "estudiantes": [
+      },
       {
-        "nombre": "Katherine",
+        "nombre": "Paul",
         "estadoCivil": "soltero",
         "tieneEnfermedad": false
       }
@@ -42,9 +36,17 @@
       },
       {
         "nombre": "Vanessa",
-        "estadoCivil": "soltero",
+        "estadoCivil": "casado",
         "tieneEnfermedad": false
       }
     ]
+  },
+  {
+    "nombre": "ESPOCH",
+    "fundacion": "1945"
+  },
+  {
+    "nombre": "ESPOCH",
+    "fundacion": "1945"
   }
 ]

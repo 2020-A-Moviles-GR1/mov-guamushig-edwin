@@ -16,17 +16,6 @@
     ]
   },
   {
-    "nombre": "Catolica",
-    "fundacion": "1955",
-    "estudiantes": [
-      {
-        "nombre": "Katherine",
-        "estadoCivil": "soltero",
-        "tieneEnfermedad": false
-      }
-    ]
-  },
-  {
     "nombre": "Salesiana",
     "fundacion": "1955",
     "estudiantes": [
@@ -36,8 +25,8 @@
         "tieneEnfermedad": false
       },
       {
-        "nombre": "Paul",
-        "estadoCivil": "soltero",
+        "nombre": "Vanessa",
+        "estadoCivil": "casado",
         "tieneEnfermedad": false
       },
       {
@@ -46,5 +35,13 @@
         "tieneEnfermedad": false
       }
     ]
+  },
+  {
+    "nombre": "ESPOCH",
+    "fundacion": "1945"
+  },
+  {
+    "nombre": "ESPOCH",
+    "fundacion": "1945"
   }
 ]
