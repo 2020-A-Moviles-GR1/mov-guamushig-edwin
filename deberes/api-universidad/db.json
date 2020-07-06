@@ -1,0 +1,47 @@
+[
+  {
+    "nombre": "Politecnica",
+    "fundacion": "1955",
+    "estudiantes": [
+      {
+        "nombre": "Edwin",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      },
+      {
+        "nombre": "Paul",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      }
+    ]
+  },
+  {
+    "nombre": "Salesiana",
+    "fundacion": "1955",
+    "estudiantes": [
+      {
+        "nombre": "Edwin",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      },
+      {
+        "nombre": "Vanessa",
+        "estadoCivil": "casado",
+        "tieneEnfermedad": false
+      },
+      {
+        "nombre": "Vanessa",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      }
+    ]
+  },
+  {
+    "nombre": "ESPOCH",
+    "fundacion": "1945"
+  },
+  {
+    "nombre": "ESPOCH",
+    "fundacion": "1945"
+  }
+]
