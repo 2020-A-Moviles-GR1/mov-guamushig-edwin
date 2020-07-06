@@ -14,7 +14,8 @@ fun main(args: Array<String>) {
     );
 
     val datos = leerArchivo()
-    val indices = buscarYRetornarIndices("Edwin", datos)
+    val indices = crearEstudiante("ESPOCH", datos)
+    escribirEnArchivo(indices)
     println(indices)
 //    val resultado = buscarEstudiante("estadoCivil", Estudiante.ESTADO_CIVIL.soltero, datos)
 //    resultado.forEach { list ->
