@@ -62,32 +62,50 @@ fun editarEstudiante(
     val indices = buscarYRetornarIndices(nombre, universidades)
     val existeUniverdad = indices["universidad"]!! > -1
     if (existeUniverdad) {
+        val indiceUniversidad = indices["universidad"] as Int
+        val indiceEstudiante = indices["estudiante"] as Int
         when (campoAEditar) {
             "nombre" -> {
-                universidades[1].nombre = nuevoValor as String
+                universidades[indiceUniversidad].estudiantes?.get(indiceEstudiante)?.nombre = nuevoValor as String
             }
-            "fundacion" -> {
-                universidades[1].fundacion = nuevoValor as String
+            "estadoCivil" -> {
+                universidades[indiceUniversidad].estudiantes?.get(indiceEstudiante)?.estadoCivil =
+                    nuevoValor as Estudiante.ESTADO_CIVIL
             }
         }
+
     }
     return universidades
 }
-//
-//fun crearUniversidad(): MutableList<Universida> {
-//    return mutableListOf(Universida("ESPOCH", "1945"))
-//}
-//
-//
-//fun eliminarUniversidad(nombre: String, universidades: MutableList<Universida>): MutableList<Universida> {
-//    val indice = buscarYRetornarIndice(nombre, universidades)
-//    val existeUniverdad = indice > -1
-//    if (existeUniverdad) {
-//        universidades.removeAt(indice)
-//    }
-//    return universidades
-//}
-//
+
+
+fun crearEstudiante(
+    nombreUniversidad: String,
+    universidades: MutableList<Universida>
+): MutableList<Universida> {
+    val indiceUniversida = buscarYRetornarIndice(nombreUniversidad, universidades)
+    val existeUniversidad = indiceUniversida > -1
+    if (existeUniversidad) {
+        val estudiante = Estudiante("Juanjo", Estudiante.ESTADO_CIVIL.viudo, true)
+        universidades[indiceUniversida].estudiantes?.add(estudiante)
+    }
+    return universidades
+}
+
+
+fun eliminarEstudiante(nombre: String, universidades: MutableList<Universida>): MutableList<Universida> {
+    val indices = buscarYRetornarIndices(nombre, universidades)
+    val existeUniverdad = indices["universidad"]!! > -1
+    val existeEstudiante = indices["estudiante"]!! > -1
+
+    if (existeUniverdad && existeEstudiante) {
+        val indiceUniversidad = indices["universidad"] as Int
+        val indiceEstudiante = indices["estudiante"] as Int
+        universidades[indiceUniversidad].estudiantes?.removeAt(indiceEstudiante)
+    }
+    return universidades
+}
+
 fun buscarYRetornarIndices(nombre: String, universidades: MutableList<Universida>): Map<String, Int?> {
     val respuesta = universidades
         .map { universidad: Universida ->

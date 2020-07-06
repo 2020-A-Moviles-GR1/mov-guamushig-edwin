@@ -31,19 +31,26 @@
       },
       {
         "nombre": "Vanessa",
-        "estadoCivil": "soltero",
+        "estadoCivil": "casado",
         "tieneEnfermedad": false
       },
       {
-        "nombre": "Vanessa",
-        "estadoCivil": "casado",
-        "tieneEnfermedad": false
+        "nombre": "Juanjo",
+        "estadoCivil": "viudo",
+        "tieneEnfermedad": true
       }
     ]
   },
   {
     "nombre": "ESPOCH",
-    "fundacion": "1945"
+    "fundacion": "1945",
+    "estudiantes": [
+      {
+        "nombre": "Juanjo",
+        "estadoCivil": "viudo",
+        "tieneEnfermedad": true
+      }
+    ]
   },
   {
     "nombre": "ESPOCH",

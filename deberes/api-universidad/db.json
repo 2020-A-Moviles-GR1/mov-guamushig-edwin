@@ -9,6 +9,11 @@
         "tieneEnfermedad": false
       },
       {
+        "nombre": "Edwin",
+        "estadoCivil": "soltero",
+        "tieneEnfermedad": false
+      },
+      {
         "nombre": "Paul",
         "estadoCivil": "soltero",
         "tieneEnfermedad": false
@@ -30,15 +35,22 @@
         "tieneEnfermedad": false
       },
       {
-        "nombre": "Vanessa",
-        "estadoCivil": "soltero",
-        "tieneEnfermedad": false
+        "nombre": "Juanjo",
+        "estadoCivil": "viudo",
+        "tieneEnfermedad": true
       }
     ]
   },
   {
     "nombre": "ESPOCH",
-    "fundacion": "1945"
+    "fundacion": "1945",
+    "estudiantes": [
+      {
+        "nombre": "Juanjo",
+        "estadoCivil": "viudo",
+        "tieneEnfermedad": true
+      }
+    ]
   },
   {
     "nombre": "ESPOCH",
