@@ -14,21 +14,22 @@ fun main(args: Array<String>) {
     );
 
     val datos = leerArchivo()
-    val resultado = buscarEstudiante("estadoCivil", Estudiante.ESTADO_CIVIL.casado, datos)
-    val limpio = resultado.filter { it != null }
-    limpio.forEach { list ->
-        val universidad: Universida = list?.get(0) as Universida
-        val arregloEstudiantes: List<Estudiante> = list?.get(1) as List<Estudiante>
-        val nombresEstudiantes = arregloEstudiantes.map { estudiante: Estudiante ->
-            val arregloDatos = mutableMapOf<String, Any>();
-            arregloDatos.put("Nombre", estudiante.nombre)
-            arregloDatos.put("Estado Civil", estudiante.estadoCivil)
-            return@map arregloDatos
-        }
-        println("Universidad: ${universidad.nombre}")
-        println("Estudiantes coinciden: ${nombresEstudiantes}")
-        println("----------------------------------------------------------------------------------------")
-    }
+    val indices = buscarYRetornarIndices("Edwin", datos)
+    println(indices)
+//    val resultado = buscarEstudiante("estadoCivil", Estudiante.ESTADO_CIVIL.soltero, datos)
+//    resultado.forEach { list ->
+//        val universidad: Universida = list?.get(0) as Universida
+//        val arregloEstudiantes: List<Estudiante> = list?.get(1) as List<Estudiante>
+//        val nombresEstudiantes = arregloEstudiantes.map { estudiante: Estudiante ->
+//            val arregloDatos = mutableMapOf<String, Any>();
+//            arregloDatos.put("Nombre", estudiante.nombre)
+//            arregloDatos.put("Estado Civil", estudiante.estadoCivil)
+//            return@map arregloDatos
+//        }
+//        println("Universidad: ${universidad.nombre}")
+//        println("Estudiantes coinciden: ${nombresEstudiantes}")
+//        println("----------------------------------------------------------------------------------------")
+//    }
 //    resultado.forEach {
 //        universida: Universida? ->
 //        println("-------------------------------")
