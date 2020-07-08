@@ -1,39 +1,35 @@
 [
   {
+    "nombre": "UDLA",
+    "fundacion": 1998,
+    "direccion": "Av de las americas",
+    "habilitado": true,
+    "estudiantes": []
+  },
+  {
     "nombre": "Politecnica",
-    "fundacion": "1955",
+    "fundacion": 1998,
+    "direccion": "Av galo plaza",
+    "habilitado": true,
     "estudiantes": [
       {
-        "nombre": "Edison",
-        "estadoCivil": "soltero",
-        "tieneEnfermedad": false
-      },
-      {
-        "nombre": "Paul",
-        "estadoCivil": "soltero",
-        "tieneEnfermedad": false
-      }
-    ]
-  },
-  {
-    "nombre": "Salesiana",
-    "fundacion": "2000",
-    "estudiantes": [
-      {
-        "nombre": "Juanjo",
-        "estadoCivil": "viudo",
-        "tieneEnfermedad": true
-      }
-    ]
-  },
-  {
-    "nombre": "ESPOL",
-    "fundacion": "1954",
-    "estudiantes": [
-      {
-        "nombre": "Javier",
-        "estadoCivil": "viudo",
-        "tieneEnfermedad": false
+        "nombre": "Ignacio",
+        "codigo": "ig001",
+        "sexo": "M",
+        "fechaRegistro": {
+          "date": {
+            "year": 2020,
+            "month": 7,
+            "day": 8
+          },
+          "time": {
+            "hour": 14,
+            "minute": 19,
+            "second": 59,
+            "nano": 976564700
+          }
+        },
+        "tieneBeca": true
       }
     ]
   }

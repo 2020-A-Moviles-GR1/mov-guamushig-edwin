@@ -25,8 +25,9 @@ fun stringMenuInicio(): String {
 fun crearUniversidadMenu() {
     val nombre = JOptionPane.showInputDialog("Ingrese nombre de universidad")
     val fundacion = JOptionPane.showInputDialog("Ingrese el anio de fundacion")
+    val direccion = JOptionPane.showInputDialog("Ingrese la direccion")
     val datos = leerArchivo()
-    val universidadNueva = crearUniversidad(nombre, fundacion)
+    val universidadNueva = crearUniversidad(nombre, fundacion.toInt(), direccion)
     val nuevo = datos + universidadNueva
     escribirEnArchivo(nuevo)
 }

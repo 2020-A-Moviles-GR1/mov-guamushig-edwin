@@ -8,6 +8,7 @@ import buscarEstudiante
 import crearEstudiante
 import editarEstudiante
 import eliminarEstudiante
+import java.time.LocalDateTime
 import javax.swing.JOptionPane
 
 
@@ -28,9 +29,11 @@ fun crearEstudianteMenu() {
     val datos = leerArchivo()
     val nombreUniversida = JOptionPane.showInputDialog("Ingrese el nombre de la universidad donde crear")
     val nombre = JOptionPane.showInputDialog("Ingrese el nombre")
-    val estadoCivil = JOptionPane.showInputDialog("Ingrese el estado civil")
-    val tieneEnfermedad = JOptionPane.showInputDialog("Ingrese true/false si tiene enfermedad")
-    val estudiante = Estudiante(nombre, estadoCivil, tieneEnfermedad.toBoolean())
+    val codigo = JOptionPane.showInputDialog("Ingrese el codigo unico")
+    val sexo = JOptionPane.showInputDialog("Ingrese el sexo F/M")
+    val tieneBeca = JOptionPane.showInputDialog("Ingrese true/false si posee una beca")
+    val fechaRegistro = LocalDateTime.now()
+    val estudiante = Estudiante(nombre, codigo, sexo.single(), fechaRegistro, tieneBeca.toBoolean())
     val estudianteCreado = crearEstudiante(nombreUniversida, estudiante, datos)
     escribirEnArchivo(estudianteCreado)
 }
@@ -63,13 +66,16 @@ fun buscarEstudiantePorAtributoMenu() {
         val nombresEstudiantes = arregloEstudiantes.map { estudiante: Estudiante ->
             val arregloDatos = mutableMapOf<String, Any>();
             arregloDatos.put("Nombre", estudiante.nombre)
-            arregloDatos.put("Estado Civil", estudiante.estadoCivil)
+            arregloDatos.put("Codigo", estudiante.codigo)
+            arregloDatos.put("Sexo", estudiante.sexo)
+            arregloDatos.put("Fecha registro", estudiante.fechaRegistro)
+            arregloDatos.put("Tiene beca", estudiante.tieneBeca)
             return@map arregloDatos
         }
         stringRespuesta += "-----------------------------------------------------------------------------------------\n" +
                 "Universidad: ${universidad.nombre}\n" +
                 "Estudiantes coinciden: ${nombresEstudiantes}\n"
     }
-    stringRespuesta += "-----------------------------------------------------------------------------------------\n" +
-            JOptionPane.showMessageDialog(null, stringRespuesta)
+    stringRespuesta += "-----------------------------------------------------------------------------------------\n"
+    JOptionPane.showMessageDialog(null, stringRespuesta)
 }
