@@ -1,6 +1,6 @@
 class Estudiante(
     var nombre: String,
-    var estadoCivil: ESTADO_CIVIL,
+    var estadoCivil: String,
     var tieneEnfermedad: Boolean
 ) {
     enum class ESTADO_CIVIL {
@@ -70,7 +70,7 @@ fun editarEstudiante(
             }
             "estadoCivil" -> {
                 universidades[indiceUniversidad].estudiantes?.get(indiceEstudiante)?.estadoCivil =
-                    nuevoValor as Estudiante.ESTADO_CIVIL
+                    nuevoValor as String
             }
         }
 
@@ -81,19 +81,22 @@ fun editarEstudiante(
 
 fun crearEstudiante(
     nombreUniversidad: String,
+    estudiante: Estudiante,
     universidades: MutableList<Universida>
 ): MutableList<Universida> {
     val indiceUniversida = buscarYRetornarIndice(nombreUniversidad, universidades)
     val existeUniversidad = indiceUniversida > -1
     if (existeUniversidad) {
-        val estudiante = Estudiante("Juanjo", Estudiante.ESTADO_CIVIL.viudo, true)
         universidades[indiceUniversida].estudiantes?.add(estudiante)
     }
     return universidades
 }
 
 
-fun eliminarEstudiante(nombre: String, universidades: MutableList<Universida>): MutableList<Universida> {
+fun eliminarEstudiante(
+    nombre: String,
+    universidades: MutableList<Universida>
+): MutableList<Universida> {
     val indices = buscarYRetornarIndices(nombre, universidades)
     val existeUniverdad = indices["universidad"]!! > -1
     val existeEstudiante = indices["estudiante"]!! > -1
@@ -106,7 +109,10 @@ fun eliminarEstudiante(nombre: String, universidades: MutableList<Universida>): 
     return universidades
 }
 
-fun buscarYRetornarIndices(nombre: String, universidades: MutableList<Universida>): Map<String, Int?> {
+fun buscarYRetornarIndices(
+    nombre: String,
+    universidades: MutableList<Universida>
+): Map<String, Int?> {
     val respuesta = universidades
         .map { universidad: Universida ->
             val universidaConEstudiante = universidad.estudiantes?.filter { estudiante: Estudiante ->

@@ -1,43 +1,74 @@
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
-
+import `manejo-archivo`.escribirEnArchivo
+import `manejo-archivo`.leerArchivo
+import `manejo-menu`.*
+import javax.swing.JOptionPane
 
 fun main(args: Array<String>) {
-
-    val estudiante = Estudiante("Vanessa", Estudiante.ESTADO_CIVIL.soltero, false)
-    val sale: List<Universida> = listOf(
-        Universida("Salesiana", "1955", mutableListOf(estudiante))
-    );
-
-    val datos = leerArchivo()
-    val indices = crearEstudiante("ESPOCH", datos)
-    escribirEnArchivo(indices)
-    println(indices)
-//    val resultado = buscarEstudiante("estadoCivil", Estudiante.ESTADO_CIVIL.soltero, datos)
-//    resultado.forEach { list ->
-//        val universidad: Universida = list?.get(0) as Universida
-//        val arregloEstudiantes: List<Estudiante> = list?.get(1) as List<Estudiante>
-//        val nombresEstudiantes = arregloEstudiantes.map { estudiante: Estudiante ->
-//            val arregloDatos = mutableMapOf<String, Any>();
-//            arregloDatos.put("Nombre", estudiante.nombre)
-//            arregloDatos.put("Estado Civil", estudiante.estadoCivil)
-//            return@map arregloDatos
-//        }
-//        println("Universidad: ${universidad.nombre}")
-//        println("Estudiantes coinciden: ${nombresEstudiantes}")
-//        println("----------------------------------------------------------------------------------------")
-//    }
-//    resultado.forEach {
-//        universida: Universida? ->
-//        println("-------------------------------")
-//        println("Nombre: ${universida?.nombre}")
-//        println("Fundacion: ${universida?.fundacion}")
-//    }
+    menu()
 }
 
 
+fun menu() {
+    val menuInicio = stringMenuInicio()
+    do {
+        val entradaTexto = JOptionPane.showInputDialog(menuInicio)
+        val opcion = Integer.parseInt(entradaTexto)
+        when (opcion) {
+            1 -> {
+                crearUniversidadMenu()
+            }
+            2 -> {
+                editarUniversidadMenu()
+            }
+            3 -> {
+                eliminarUniversidadMenu()
+            }
+            4 -> {
+                buscarUniversidaMenu()
+            }
+            5 -> {
+                listarTodoMenu()
+            }
+            6 -> {
+                menuEstudiantil()
+            }
+            else -> {
+                println("Opcion seleccionada no existe")
+            }
+        }
+    } while (opcion != 0)
+}
 
+fun menuEstudiantil() {
+    val menuInicioEstudiante = stringMenuInicioEstudiante()
+    do {
+        val entradaTexto = JOptionPane.showInputDialog(menuInicioEstudiante)
+        val opcion = Integer.parseInt(entradaTexto)
+        when (opcion) {
+            1 -> {
+                crearEstudianteMenu()
+            }
+            2 -> {
+                editarEstudianteMenu()
+            }
+            3 -> {
+                eliminarEstudianteMenu()
+            }
+            4 -> {
+                buscarEstudiantePorAtributoMenu()
+            }
+            5 -> {
+                crearEstudianteMenu()
+            }
+            6 -> {
+                menu()
+            }
+            7 -> {
+                listarTodoMenu()
+            }
+            else -> {
+                println("Opcion seleccionada no existe")
+            }
+        }
+    } while (opcion == 0)
+}

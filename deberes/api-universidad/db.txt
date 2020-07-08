@@ -4,12 +4,7 @@
     "fundacion": "1955",
     "estudiantes": [
       {
-        "nombre": "Edwin",
-        "estadoCivil": "soltero",
-        "tieneEnfermedad": false
-      },
-      {
-        "nombre": "Edwin",
+        "nombre": "Edison",
         "estadoCivil": "soltero",
         "tieneEnfermedad": false
       },
@@ -22,28 +17,7 @@
   },
   {
     "nombre": "Salesiana",
-    "fundacion": "1955",
-    "estudiantes": [
-      {
-        "nombre": "Edwin",
-        "estadoCivil": "soltero",
-        "tieneEnfermedad": false
-      },
-      {
-        "nombre": "Vanessa",
-        "estadoCivil": "casado",
-        "tieneEnfermedad": false
-      },
-      {
-        "nombre": "Juanjo",
-        "estadoCivil": "viudo",
-        "tieneEnfermedad": true
-      }
-    ]
-  },
-  {
-    "nombre": "ESPOCH",
-    "fundacion": "1945",
+    "fundacion": "2000",
     "estudiantes": [
       {
         "nombre": "Juanjo",
@@ -53,7 +27,14 @@
     ]
   },
   {
-    "nombre": "ESPOCH",
-    "fundacion": "1945"
+    "nombre": "ESPOL",
+    "fundacion": "1954",
+    "estudiantes": [
+      {
+        "nombre": "Javier",
+        "estadoCivil": "viudo",
+        "tieneEnfermedad": false
+      }
+    ]
   }
 ]
