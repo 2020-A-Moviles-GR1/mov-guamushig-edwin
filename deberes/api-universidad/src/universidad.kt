@@ -1,3 +1,6 @@
+import com.google.gson.Gson
+import java.io.File
+import java.io.InputStream
 import java.util.*
 
 class Universida(
@@ -54,12 +57,18 @@ fun editarUniversidad(
     return universidades
 }
 
-fun crearUniversidad(): MutableList<Universida> {
-    return mutableListOf(Universida("ESPOCH", "1945"))
+fun crearUniversidad(
+    nombre: String,
+    fundacion: String? = null
+): MutableList<Universida> {
+    val estudiantes = mutableListOf<Estudiante>()
+    return mutableListOf(Universida(nombre, fundacion, estudiantes))
 }
 
-
-fun eliminarUniversidad(nombre: String, universidades: MutableList<Universida>): MutableList<Universida> {
+fun eliminarUniversidad(
+    nombre: String,
+    universidades: MutableList<Universida>
+): MutableList<Universida> {
     val indice = buscarYRetornarIndice(nombre, universidades)
     val existeUniverdad = indice > -1
     if (existeUniverdad) {
@@ -79,4 +88,10 @@ fun buscarYRetornarIndice(nombre: String, universidades: MutableList<Universida>
     }
     return universidades.indexOf(respuesta[0])
 
+}
+
+fun listarTodo(): String {
+    val inputStream: InputStream = File("db.txt").inputStream()
+    val inputString = inputStream.bufferedReader().use { it.readText() }
+    return inputString
 }
