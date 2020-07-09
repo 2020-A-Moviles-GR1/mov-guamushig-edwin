@@ -1,5 +1,6 @@
 import java.io.File
 import java.io.InputStream
+import javax.swing.JOptionPane
 
 class Universida(
     var nombre: String,
@@ -44,7 +45,8 @@ fun buscarUniversidad(
                 }
         }
         else -> {
-            println("Campo ${campo} no encontrado")
+            JOptionPane.showMessageDialog(null,"Campo ${campo} no encontrado")
+//            println("Campo ${campo} no encontrado")
         }
     }
     return universidadesEncontradas
@@ -71,6 +73,9 @@ fun editarUniversidad(
             }
             "habilitado" -> {
                 universidades[indice].habilitado = nuevoValor.toBoolean()
+            }
+            else -> {
+                JOptionPane.showMessageDialog(null, "No se encontro campo ${campoAEditar}")
             }
         }
     }
@@ -104,7 +109,8 @@ fun buscarYRetornarIndice(nombre: String, universidades: MutableList<Universida>
     }
     val existeUniversida = respuesta.size > 0
     if (!existeUniversida) {
-        println("No se encontro universidad ${nombre}")
+        JOptionPane.showMessageDialog(null, "No se encontro universidad ${nombre}")
+//        println("No se encontro universidad ${nombre}")
         return -1
     }
     return universidades.indexOf(respuesta[0])

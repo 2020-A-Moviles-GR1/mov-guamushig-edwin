@@ -1,20 +1,13 @@
 [
   {
-    "nombre": "UDLA",
-    "fundacion": 1998,
-    "direccion": "Av de las americas",
-    "habilitado": true,
-    "estudiantes": []
-  },
-  {
     "nombre": "Politecnica",
-    "fundacion": 1998,
-    "direccion": "Av galo plaza",
+    "fundacion": 1945,
+    "direccion": "av de las universidades",
     "habilitado": true,
     "estudiantes": [
       {
-        "nombre": "Ignacio",
-        "codigo": "ig001",
+        "nombre": "Edwin",
+        "codigo": "ed01",
         "sexo": "M",
         "fechaRegistro": {
           "date": {
@@ -23,13 +16,13 @@
             "day": 8
           },
           "time": {
-            "hour": 14,
-            "minute": 19,
-            "second": 59,
-            "nano": 976564700
+            "hour": 22,
+            "minute": 12,
+            "second": 21,
+            "nano": 76267300
           }
         },
-        "tieneBeca": true
+        "tieneBeca": false
       }
     ]
   }
