@@ -1,7 +1,14 @@
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import javax.swing.JOptionPane
+
 class Estudiante(
-    var nombre: String,
-    var estadoCivil: String,
-    var tieneEnfermedad: Boolean
+        var nombre: String,
+        var codigo: String,
+        var sexo: Char,
+        var fechaRegistro: LocalDateTime,
+        var tieneBeca: Boolean = false
 ) {
     enum class ESTADO_CIVIL {
         soltero,
@@ -12,65 +19,111 @@ class Estudiante(
 }
 
 fun buscarEstudiante(
-    campo: String,
-    consulta: Any,
-    universidades: MutableList<Universida>
+        campo: String,
+        consulta: String,
+        universidades: MutableList<Universida>
 ): List<List<Any>?> {
     var universidadesEncontrados: List<List<Any>?> = emptyList()
     when (campo) {
         "nombre" -> {
             universidadesEncontrados = universidades
-                .map { universidad: Universida ->
-                    val universidaConEstudiante = universidad.estudiantes?.filter { estudiante: Estudiante ->
-                        return@filter estudiante.nombre == consulta
+                    .map { universidad: Universida ->
+                        val universidaConEstudiante = universidad.estudiantes?.filter { estudiante: Estudiante ->
+                            return@filter estudiante.nombre == consulta
+                        }
+                        return@map universidaConEstudiante?.let { listOf<Any>(universidad, it) }
+                    }.filter { list: List<Any>? ->
+                        return@filter list != null
+                    }.filter { list ->
+                        val estudiantesFiltrados = list?.get(1) as List<Estudiante>
+                        return@filter estudiantesFiltrados.size > 0
                     }
-                    return@map universidaConEstudiante?.let { listOf<Any>(universidad, it) }
-                }.filter { list: List<Any>? ->
-                    return@filter list != null
-                }.filter { list ->
-                    val estudiantesFiltrados = list?.get(1) as List<Estudiante>
-                    return@filter estudiantesFiltrados.size > 0
-                }
         }
-        "estadoCivil" -> {
+        "codigo" -> {
             universidadesEncontrados = universidades
-                .map { universidad: Universida ->
-                    val universidaConEstudiante = universidad.estudiantes?.filter { estudiante: Estudiante ->
-                        return@filter estudiante.estadoCivil == consulta
+                    .map { universidad: Universida ->
+                        val universidaConEstudiante = universidad.estudiantes?.filter { estudiante: Estudiante ->
+                            return@filter estudiante.codigo == consulta
+                        }
+                        return@map universidaConEstudiante?.let { listOf<Any>(universidad, it) }
+                    }.filter { list: List<Any>? ->
+                        return@filter list != null
+                    }.filter { list ->
+                        val estudiantesFiltrados = list?.get(1) as List<Estudiante>
+                        return@filter estudiantesFiltrados.size > 0
                     }
-                    return@map universidaConEstudiante?.let { listOf<Any>(universidad, it) }
-                }.filter { list: List<Any>? ->
-                    return@filter list != null
-                }.filter { list ->
-                    val estudiantesFiltrados = list?.get(1) as List<Estudiante>
-                    return@filter estudiantesFiltrados.size > 0
-                }
+        }
+        "sexo" -> {
+            universidadesEncontrados = universidades
+                    .map { universidad: Universida ->
+                        val universidaConEstudiante = universidad.estudiantes?.filter { estudiante: Estudiante ->
+                            return@filter estudiante.sexo == consulta.single()
+                        }
+                        return@map universidaConEstudiante?.let { listOf<Any>(universidad, it) }
+                    }.filter { list: List<Any>? ->
+                        return@filter list != null
+                    }.filter { list ->
+                        val estudiantesFiltrados = list?.get(1) as List<Estudiante>
+                        return@filter estudiantesFiltrados.size > 0
+                    }
+        }
+//        "fechaRegistro" -> {
+//            val fecha = LocalDate.parse(consulta, DateTimeFormatter.ISO_DATE)
+//            universidadesEncontrados = universidades
+//                .map { universidad: Universida ->
+//                    val universidaConEstudiante = universidad.estudiantes?.filter { estudiante: Estudiante ->
+//                        return@filter estudiante.fechaRegistro == fecha
+//                    }
+//                    return@map universidaConEstudiante?.let { listOf<Any>(universidad, it) }
+//                }.filter { list: List<Any>? ->
+//                    return@filter list != null
+//                }.filter { list ->
+//                    val estudiantesFiltrados = list?.get(1) as List<Estudiante>
+//                    return@filter estudiantesFiltrados.size > 0
+//                }
+//        }
+        "tieneBeca" -> {
+            universidadesEncontrados = universidades
+                    .map { universidad: Universida ->
+                        val universidaConEstudiante = universidad.estudiantes?.filter { estudiante: Estudiante ->
+                            return@filter estudiante.tieneBeca == consulta.toBoolean()
+                        }
+                        return@map universidaConEstudiante?.let { listOf<Any>(universidad, it) }
+                    }.filter { list: List<Any>? ->
+                        return@filter list != null
+                    }.filter { list ->
+                        val estudiantesFiltrados = list?.get(1) as List<Estudiante>
+                        return@filter estudiantesFiltrados.size > 0
+                    }
         }
         else -> {
-            println("Campo ${campo} no encontrado")
+            JOptionPane.showMessageDialog(null, "Campo ${campo} no encontrado")
+//            println("Campo ${campo} no encontrado")
         }
     }
     return universidadesEncontrados
 }
 
 fun editarEstudiante(
-    nombre: String,
-    campoAEditar: String,
-    nuevoValor: Any,
-    universidades: MutableList<Universida>
+        codigo: String,
+        campoAEditar: String,
+        nuevoValor: String,
+        universidades: MutableList<Universida>
 ): MutableList<Universida> {
-    val indices = buscarYRetornarIndices(nombre, universidades)
+    val indices = buscarYRetornarIndices(codigo, universidades)
     val existeUniverdad = indices["universidad"]!! > -1
     if (existeUniverdad) {
         val indiceUniversidad = indices["universidad"] as Int
         val indiceEstudiante = indices["estudiante"] as Int
         when (campoAEditar) {
             "nombre" -> {
-                universidades[indiceUniversidad].estudiantes?.get(indiceEstudiante)?.nombre = nuevoValor as String
+                universidades[indiceUniversidad].estudiantes?.get(indiceEstudiante)?.nombre = nuevoValor
             }
-            "estadoCivil" -> {
-                universidades[indiceUniversidad].estudiantes?.get(indiceEstudiante)?.estadoCivil =
-                    nuevoValor as String
+            "sexo" -> {
+                universidades[indiceUniversidad].estudiantes?.get(indiceEstudiante)?.sexo = nuevoValor.single()
+            }
+            "tieneBeca" -> {
+                universidades[indiceUniversidad].estudiantes?.get(indiceEstudiante)?.tieneBeca = nuevoValor.toBoolean()
             }
         }
 
@@ -80,9 +133,9 @@ fun editarEstudiante(
 
 
 fun crearEstudiante(
-    nombreUniversidad: String,
-    estudiante: Estudiante,
-    universidades: MutableList<Universida>
+        nombreUniversidad: String,
+        estudiante: Estudiante,
+        universidades: MutableList<Universida>
 ): MutableList<Universida> {
     val indiceUniversida = buscarYRetornarIndice(nombreUniversidad, universidades)
     val existeUniversidad = indiceUniversida > -1
@@ -94,10 +147,10 @@ fun crearEstudiante(
 
 
 fun eliminarEstudiante(
-    nombre: String,
-    universidades: MutableList<Universida>
+        codigo: String,
+        universidades: MutableList<Universida>
 ): MutableList<Universida> {
-    val indices = buscarYRetornarIndices(nombre, universidades)
+    val indices = buscarYRetornarIndices(codigo, universidades)
     val existeUniverdad = indices["universidad"]!! > -1
     val existeEstudiante = indices["estudiante"]!! > -1
 
@@ -110,25 +163,26 @@ fun eliminarEstudiante(
 }
 
 fun buscarYRetornarIndices(
-    nombre: String,
-    universidades: MutableList<Universida>
+        codigo: String,
+        universidades: MutableList<Universida>
 ): Map<String, Int?> {
     val respuesta = universidades
-        .map { universidad: Universida ->
-            val universidaConEstudiante = universidad.estudiantes?.filter { estudiante: Estudiante ->
-                return@filter estudiante.nombre == nombre
+            .map { universidad: Universida ->
+                val universidaConEstudiante = universidad.estudiantes?.filter { estudiante: Estudiante ->
+                    return@filter estudiante.codigo == codigo
+                }
+                return@map universidaConEstudiante?.let { listOf<Any>(universidad, it) }
+            }.filter { list: List<Any>? ->
+                return@filter list != null
+            }.filter { list ->
+                val estudiantesFiltrados = list?.get(1) as List<Estudiante>
+                return@filter estudiantesFiltrados.size > 0
             }
-            return@map universidaConEstudiante?.let { listOf<Any>(universidad, it) }
-        }.filter { list: List<Any>? ->
-            return@filter list != null
-        }.filter { list ->
-            val estudiantesFiltrados = list?.get(1) as List<Estudiante>
-            return@filter estudiantesFiltrados.size > 0
-        }
 
     val encontroRespuesta = respuesta.size > 0
     if (!encontroRespuesta) {
-        println("No se encontro estudiante: $nombre")
+        JOptionPane.showMessageDialog(null, "No se encontro estudiante: ${codigo}")
+//        println("No se encontro estudiante: ${codigo}")
         return mapOf<String, Int?>("universidad" to -1, "estudiante" to -1)
     }
     val indiceUniversidad = universidades.indexOf(respuesta[0]?.get(0))

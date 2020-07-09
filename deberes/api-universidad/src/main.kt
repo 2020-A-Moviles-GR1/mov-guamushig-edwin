@@ -1,5 +1,3 @@
-import `manejo-archivo`.escribirEnArchivo
-import `manejo-archivo`.leerArchivo
 import `manejo-menu`.*
 import javax.swing.JOptionPane
 
@@ -33,7 +31,8 @@ fun menu() {
                 menuEstudiantil()
             }
             else -> {
-                println("Opcion seleccionada no existe")
+                JOptionPane.showMessageDialog(null, "Opcion seleccionada no existe")
+//                println("Opcion seleccionada no existe")
             }
         }
     } while (opcion != 0)
@@ -58,16 +57,14 @@ fun menuEstudiantil() {
                 buscarEstudiantePorAtributoMenu()
             }
             5 -> {
-                crearEstudianteMenu()
-            }
-            6 -> {
                 menu()
             }
-            7 -> {
+            6 -> {
                 listarTodoMenu()
             }
             else -> {
-                println("Opcion seleccionada no existe")
+                JOptionPane.showMessageDialog(null, "Opcion seleccionada no existe")
+//                println("Opcion seleccionada no existe")
             }
         }
     } while (opcion == 0)

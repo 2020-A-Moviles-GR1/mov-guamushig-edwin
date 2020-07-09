@@ -1,39 +1,28 @@
 [
   {
     "nombre": "Politecnica",
-    "fundacion": "1955",
+    "fundacion": 1945,
+    "direccion": "av de las universidades",
+    "habilitado": true,
     "estudiantes": [
       {
-        "nombre": "Edison",
-        "estadoCivil": "soltero",
-        "tieneEnfermedad": false
-      },
-      {
-        "nombre": "Paul",
-        "estadoCivil": "soltero",
-        "tieneEnfermedad": false
-      }
-    ]
-  },
-  {
-    "nombre": "Salesiana",
-    "fundacion": "2000",
-    "estudiantes": [
-      {
-        "nombre": "Juanjo",
-        "estadoCivil": "viudo",
-        "tieneEnfermedad": true
-      }
-    ]
-  },
-  {
-    "nombre": "ESPOL",
-    "fundacion": "1954",
-    "estudiantes": [
-      {
-        "nombre": "Javier",
-        "estadoCivil": "viudo",
-        "tieneEnfermedad": false
+        "nombre": "Edwin",
+        "codigo": "ed01",
+        "sexo": "M",
+        "fechaRegistro": {
+          "date": {
+            "year": 2020,
+            "month": 7,
+            "day": 8
+          },
+          "time": {
+            "hour": 22,
+            "minute": 12,
+            "second": 21,
+            "nano": 76267300
+          }
+        },
+        "tieneBeca": false
       }
     ]
   }
