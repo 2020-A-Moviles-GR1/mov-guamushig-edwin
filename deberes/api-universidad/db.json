@@ -6,7 +6,7 @@
     "habilitado": true,
     "estudiantes": [
       {
-        "nombre": "Edwin",
+        "nombre": "Paul",
         "codigo": "ed01",
         "sexo": "M",
         "fechaRegistro": {

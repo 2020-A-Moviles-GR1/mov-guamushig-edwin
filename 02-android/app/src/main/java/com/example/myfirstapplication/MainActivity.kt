@@ -15,6 +15,14 @@ class MainActivity : AppCompatActivity() {
         btn_ciclo_vida.setOnClickListener { boton ->
             irCicloDeVida()
         }
+
+        btn_list_view.setOnClickListener { boton ->
+            irAListView()
+        }
+
+        btn_intent_respuesta.setOnClickListener {
+            irAIntentRespuesta()
+        }
     }
 
     fun irCicloDeVida() {
@@ -23,6 +31,23 @@ class MainActivity : AppCompatActivity() {
             ActivityCicloVida::class.java
         )
 
+        startActivity(intentExplicito)
+    }
+
+    fun irAIntentRespuesta() {
+        val intentExplicito = Intent(
+            this,
+            IntentEnviarParametros::class.java
+        )
+        intentExplicito.putExtra("numero", 69)
+        startActivity(intentExplicito)
+    }
+
+    fun irAListView() {
+        val intentExplicito = Intent(
+            this,
+            BListViewActivity::class.java
+        )
         startActivity(intentExplicito)
     }
 

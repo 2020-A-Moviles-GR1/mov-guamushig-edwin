@@ -15,12 +15,17 @@ class ActivityCicloVida : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ciclo_vida)
         Log.i("Activity", "On create")
+        numeroActual = ServicioDBBMemoria.numero
+        if (numeroActual != 0) {
+            txt_view_valores.text = numeroActual.toString()
+        }
         btn_aniadir.setOnClickListener {
             sumarUnValor()
         }
     }
 
     fun sumarUnValor() {
+        ServicioDBBMemoria.aniadirNumero()
         numeroActual = numeroActual + 1
         txt_view_valores.text = numeroActual.toString()
     }
@@ -67,7 +72,7 @@ class ActivityCicloVida : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         Log.i("Activity", "On restore instance")
         val valorRecuperado = savedInstanceState?.getInt("numeroActualGuardado")
-        if(valorRecuperado != null) {
+        if (valorRecuperado != null) {
             this.numeroActual = valorRecuperado
             txt_view_valores.text = valorRecuperado.toString()
         }
