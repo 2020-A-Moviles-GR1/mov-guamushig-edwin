@@ -17,14 +17,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/school" />
 
-    <ImageView
-        android:id="@+id/img_view_estudiante"
-        android:layout_width="202dp"
-        android:layout_height="143dp"
-        android:layout_marginTop="140dp"
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="199dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="8dp"
+        android:text="Gestione las universidades y sus estudiantes."
         app:layout_constraintEnd_toEndOf="@+id/img_view_universidad"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/img_view_universidad"
-        app:layout_constraintTop_toBottomOf="@+id/img_view_universidad"
-        app:srcCompat="@mipmap/student" />
+        app:layout_constraintTop_toBottomOf="@+id/img_view_universidad" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -92,7 +92,7 @@ class CrearEditarUniversidadActivity : AppCompatActivity() {
         btn_modal_categoria.setText(universidad.categoria.toString())
     }
 
-    fun mostrarToast(text: String) {
+   fun mostrarToast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 

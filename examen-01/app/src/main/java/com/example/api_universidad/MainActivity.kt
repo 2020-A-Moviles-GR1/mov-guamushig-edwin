@@ -12,13 +12,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val universidad_view = findViewById<ImageView>(R.id.img_view_universidad) as ImageView
-        val estudiante_view = findViewById<ImageView>(R.id.img_view_estudiante) as ImageView
 
         universidad_view.setOnClickListener {
             irAUniversidad()
-        }
-
-        estudiante_view.setOnClickListener {
         }
     }
 
@@ -30,7 +26,4 @@ class MainActivity : AppCompatActivity() {
         startActivity(intentExplicito)
     }
 
-    fun irAEstudiante() {
-
-    }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_estudiante.*
+import java.lang.Error
 
 class EstudianteActivity : AppCompatActivity() {
 
@@ -18,15 +19,13 @@ class EstudianteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_estudiante)
 
         idUniversidad = intent.getIntExtra("idUniversidad", -1)
-        val listaEstudiantes = ServicioBDD.estudiantes
-        val listaEstudiantesPorUniversidad = listaEstudiantes.filter { estudiante: Estudiante ->
-            return@filter estudiante.universidad == idUniversidad
-        }
+        val listaEstudiantes = ServicioBDD.retornarEstudiantesPorUniversidad(idUniversidad)
+
         txt_descripcion_universidad.setText("Gestione los estudiantes de la \n universidad ${ServicioBDD.universidades[idUniversidad].nombre}")
         adaptador = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
-            listaEstudiantesPorUniversidad
+            listaEstudiantes
         )
 
         list_view_estudiantes.adapter = adaptador

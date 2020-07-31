@@ -1,5 +1,6 @@
 package com.example.api_universidad
 
+import java.time.LocalDate
 import java.util.*
 
 class Estudiante(
@@ -11,6 +12,6 @@ class Estudiante(
     var universidad: Int
 ) {
     override fun toString(): String {
-        return "${nombre} [${sexo}]"
+        return "${nombre} [${tieneBeca}]"
     }
 }

@@ -19,6 +19,13 @@ class ServicioBDD {
 
         var estudiantes = ArrayList<Estudiante>()
 
+        fun retornarEstudiantesPorUniversidad(idUniversidad: Int): ArrayList<Estudiante> {
+            val lista = this.estudiantes.filter { estudiante: Estudiante ->
+                return@filter estudiante.universidad == idUniversidad
+            }
+            return ArrayList(lista)
+        }
+
         fun aniadirEstudiante(estudiante: Estudiante) {
             this.estudiantes.add(estudiante)
         }
