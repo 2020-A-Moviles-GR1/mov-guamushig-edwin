@@ -22,10 +22,17 @@ class UniversidadActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_universidad)
 
+        cargarOpcionesListView()
+        setearListaInicial()
+
         btn_nuevo.setOnClickListener {
             irACrearUniversidad()
         }
 
+
+    }
+
+    fun setearListaInicial() {
         val listaUniversidades = ServicioBDD.universidades
         adaptador = ArrayAdapter(
             this,
@@ -33,7 +40,9 @@ class UniversidadActivity : AppCompatActivity() {
             listaUniversidades
         )
         list_view_universidades.adapter = adaptador
+    }
 
+    fun cargarOpcionesListView() {
         val dialog = BottomSheetDialog(this)
         val mostrar = layoutInflater.inflate(R.layout.dialos_universidad, null)
         dialog.setContentView(mostrar)
@@ -112,7 +121,7 @@ class UniversidadActivity : AppCompatActivity() {
         val infoUniversidad = "Nombre: ${universidad.nombre}\n" +
                 "Categoria: ${universidad.categoria}\n" +
                 "Fundacion: ${universidad.fundacion}\n" +
-                "Estado: ${universidad.estado}\n" +
+                "Estado: ${stringEstadoActivoInactivo(universidad.estado!!)}\n" +
                 "Tamanio campus: ${universidad.areaConstruccion}\n"
         val mBuilder = AlertDialog.Builder(
             this
@@ -134,5 +143,12 @@ class UniversidadActivity : AppCompatActivity() {
 
     fun mostrarToast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+    fun stringEstadoActivoInactivo(estado: Boolean): String {
+        if (!estado) {
+            return "Inativo"
+        }
+        return "Activo"
     }
 }

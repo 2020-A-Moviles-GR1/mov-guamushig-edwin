@@ -1,10 +1,12 @@
 package com.example.api_universidad
 
+import android.util.Log
 import kotlin.collections.ArrayList
 
 class ServicioBDD {
     companion object {
         var universidades = ArrayList<Universidad>()
+
         fun aniadirUniversidad(universidad: Universidad) {
             this.universidades.add(universidad)
         }
@@ -16,6 +18,7 @@ class ServicioBDD {
         fun eliminarUniversidad(idUniversidad: Int) {
             this.universidades.removeAt(idUniversidad)
         }
+
 
         var estudiantes = ArrayList<Estudiante>()
 
