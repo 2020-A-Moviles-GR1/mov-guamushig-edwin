@@ -1,16 +1,15 @@
 package com.example.api_universidad
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_crear_editar_estudiante.*
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
@@ -31,6 +30,7 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
 
         if (idEstudiante != -1) {
             val estudiante: Estudiante = ServicioBDD.estudiantes[idEstudiante]
+            cargarConfiguracionInicial(estudiante)
         }
         mostrarDatePicker()
         setearRaddioButton()
@@ -78,6 +78,28 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    fun cargarConfiguracionInicial(estudiante: Estudiante) {
+        txt_nombre.setText(estudiante.nombre)
+        txt_fecha_nacimiento.setText(transformarDataString(estudiante.fechaNacimiento))
+        txt_estatura.setText(estudiante.estatura.toString())
+        rd_btn_masculino.isEnabled = false
+        rd_btn_femenino.isEnabled = false
+        btn_calendario.isEnabled = false
+        if (estudiante.sexo == "M".single()) {
+            raddio_button_sexo.check(rd_btn_masculino.id)
+            txt_sexo.setText("M")
+        } else {
+            raddio_button_sexo.check(rd_btn_femenino.id)
+            txt_sexo.setText("F")
+        }
+
+        if (estudiante.tieneBeca) {
+            check_beca.setChecked(true)
+        }
+
+    }
+
 
     fun setearCheckbox() {
         check_beca.setOnClickListener {
@@ -121,6 +143,12 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         txt_fecha_nacimiento.setText("${dayOfMonth}/${month}/${year}")
+    }
+
+    fun transformarDataString(fecha: Date): String {
+        val calendar = Calendar.getInstance()
+        calendar.time = fecha
+        return "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH)}/${calendar.get(Calendar.YEAR)}"
     }
 
     fun mostrarToast(text: String) {
