@@ -33,6 +33,18 @@ class MainActivity : AppCompatActivity() {
         btn_respuesta_propia.setOnClickListener {
             enviarIntentConRespuestaPropia()
         }
+
+        btn_http.setOnClickListener {
+            abrirActivityHttp()
+        }
+    }
+
+    fun abrirActivityHttp() {
+        val intentExplicito = Intent(
+            this,
+            HttpActivity::class.java
+        )
+        startActivity(intentExplicito)
     }
 
     fun enviarIntentConRespuestaPropia(){
