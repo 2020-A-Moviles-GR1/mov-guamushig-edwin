@@ -7,6 +7,7 @@ import java.util.*
 class Usuario(
     var nombre: String?,
     var edad: Int,
+    var cedula: String?,
     var fechaNacimiento: Date,
     var sueldo: Double
 ):Parcelable {
@@ -14,6 +15,7 @@ class Usuario(
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readInt(),
+        parcel.readString(),
         parcel.readSerializable() as Date,
         parcel.readDouble()
     ) {
@@ -23,6 +25,7 @@ class Usuario(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(nombre)
         parcel.writeInt(edad)
+        parcel.writeString(cedula)
         parcel.writeSerializable(fechaNacimiento)
         parcel.writeDouble(sueldo)
     }
