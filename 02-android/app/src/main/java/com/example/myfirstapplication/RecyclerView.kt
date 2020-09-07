@@ -15,14 +15,22 @@ class RecyclerAdaptador(
 ) : androidx.recyclerview.widget.RecyclerView.Adapter<RecyclerAdaptador.MyViewHolder>() {
     inner class MyViewHolder(view: View) :
         androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
-        val nombreTextView: TextView
-        val cedulaTextView: TextView
-        val accionButton: Button
+        val nombreTextView: TextView = view.findViewById(R.id.txt_nombre)
+        val cedulaTextView: TextView = view.findViewById(R.id.txt_cedula)
+        val accionButton: Button = view.findViewById(R.id.btn_accion)
+        val likeTextView: TextView = view.findViewById(R.id.txt_likes)
+        var numeroLikes = 0
 
         init {
-            nombreTextView = view.findViewById(R.id.txt_nombre)
-            cedulaTextView = view.findViewById(R.id.txt_cedula)
-            accionButton = view.findViewById(R.id.btn_accion)
+            accionButton.setOnClickListener {
+                this.aniadirLike()
+            }
+        }
+
+        fun aniadirLike() {
+            this.numeroLikes = this.numeroLikes + 1
+            likeTextView.text = this.numeroLikes.toString()
+            contexto.aniadirLikesEnActividad()
         }
     }
 
@@ -52,5 +60,6 @@ class RecyclerAdaptador(
         holder.nombreTextView.text = usuario.nombre
         holder.cedulaTextView.text = usuario.cedula
         holder.accionButton.text = "Like ${usuario.nombre}"
+        holder.likeTextView.text = "0"
     }
 }

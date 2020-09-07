@@ -3,11 +3,16 @@ package com.example.myfirstapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.beust.klaxon.Converter
+import com.beust.klaxon.JsonValue
 import com.beust.klaxon.Klaxon
+import com.beust.klaxon.Parser
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import kotlinx.android.synthetic.main.activity_http.*
 import com.github.kittinunf.result.Result
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HttpActivity : AppCompatActivity() {
     val url = "http://192.168.100.10:1337"
@@ -56,7 +61,7 @@ class HttpActivity : AppCompatActivity() {
                     }
                     is Result.Success -> {
                         val usuario = result.get()
-                        Log.i("http-klaxon","Exito crear $usuario")
+                        Log.i("http-klaxon", "Exito crear $usuario")
 
                     }
                 }
@@ -66,38 +71,69 @@ class HttpActivity : AppCompatActivity() {
     fun obtenerUsuarios() {
 
         val pokemonString = """
-            {
+        [
+          {
             "createdAt": 1598531451966,
             "updatedAt": 1598531451966,
             "id": 1,
-            "nombre": "umbreon",
-            "usuario": 1
+            "nombre": "Snorlax",
+            "usuario": {
+              "createdAt": 1599448691629,
+              "updatedAt": 1599448691629,
+              "id": 1,
+              "cedula": "1726706334",
+              "nombre": "Edwin",
+              "correo": "edwin.guamushig@epn.edu.ec",
+              "estadoCivil": "soltero",
+              "password": "12sds22"
+            }
+          },
+          {
+            "createdAt": 1598531451966,
+            "updatedAt": 1598531451966,
+            "id": 1,
+            "nombre": "Snorlax",
+            "usuario": 2
           }
+        ]
         """.trimIndent()
 
-        val pokemon = Klaxon().parse<Pokemon>(pokemonString)
-        if (pokemon != null) {
-            Log.i(
-                "http-klaxon",
-                "${pokemon.nombre}, ${pokemon.fechaCreacion}, ${pokemon.fechaActualizacion}, ${pokemon.id}, ${pokemon.usuario} "
-            )
 
+        val respuesta = Klaxon()
+            .converter(Pokemon.myConverter)
+            .parseArray<Pokemon>(pokemonString)
 
-            val urlUsuario = "$url/usuario"
-            urlUsuario
-                .httpGet()
-                .responseString { request, response, result ->
-                    when (result) {
-                        is Result.Success -> {
-                            val data = result.get()
-                            Log.i("http-klaxon", "Data: ${data}")
-                        }
-                        is Result.Failure -> {
-                            val ex = result.getException()
-                            Log.i("http-klaxon", "Error http ${ex.message}")
-                        }
+        val existeRespuesta = respuesta?.size
+
+        if (existeRespuesta != 0) {
+
+            respuesta?.forEach {
+                pokemon: Pokemon ->
+                when (pokemon.usuario) {
+                    is Int -> Log.i("http-klaxon", "${pokemon.usuario}")
+                    is UsuarioHttp -> {
+                        val usuario = pokemon.usuario as UsuarioHttp
+                        Log.i("http-klaxon", usuario.nombre)
                     }
                 }
+            }
+
+
+//            val urlUsuario = "$url/usuario"
+//            urlUsuario
+//                .httpGet()
+//                .responseString { request, response, result ->
+//                    when (result) {
+//                        is Result.Success -> {
+//                            val data = result.get()
+//                            Log.i("http-klaxon", "Ddatitos: ${data}")
+//                        }
+//                        is Result.Failure -> {
+//                            val ex = result.getException()
+//                            Log.i("http-klaxon", "Error http ${ex.message}")
+//                        }
+//                    }
+//                }
         }
     }
 }

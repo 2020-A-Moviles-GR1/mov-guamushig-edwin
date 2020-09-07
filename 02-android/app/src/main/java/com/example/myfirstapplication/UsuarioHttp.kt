@@ -7,8 +7,7 @@ class UsuarioHttp(
     var cedula: String,
     var nombre: String,
     var correo: String,
-    var estadoCivul: String,
+    var estadoCivil: String,
     var password: String
 ) {
-
 }
