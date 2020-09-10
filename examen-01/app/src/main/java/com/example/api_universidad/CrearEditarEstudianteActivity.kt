@@ -6,11 +6,19 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.beust.klaxon.Klaxon
 import kotlinx.android.synthetic.main.activity_crear_editar_estudiante.*
 import java.util.*
+import com.github.kittinunf.result.Result
+import kotlinx.android.synthetic.main.activity_crear_editar_estudiante.btn_cancelar
+import kotlinx.android.synthetic.main.activity_crear_editar_estudiante.btn_guardar
+import kotlinx.android.synthetic.main.activity_crear_editar_estudiante.txt_nombre
+import kotlinx.android.synthetic.main.activity_crear_editar_universidad.*
+
 
 class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
@@ -29,8 +37,23 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
         idEstudiante = intent.getIntExtra("idEstudiante", -1)
 
         if (idEstudiante != -1) {
-            val estudiante: Estudiante = ServicioBDD.estudiantes[idEstudiante]
-            cargarConfiguracionInicial(estudiante)
+            ServicioBDD
+                .findById("estudiante", idEstudiante)
+                .responseString { request, response, result ->
+                    when (result) {
+                        is Result.Success -> {
+                            val stringEstudiante = result.get()
+                            val estudiante = Klaxon()
+                                .converter(ServicioBDD.convertirEstudiante)
+                                .parse<Estudiante>(stringEstudiante)
+                            runOnUiThread {
+                                cargarConfiguracionInicial(estudiante!!)
+                            }
+                        }
+                        is Result.Failure -> {
+                        }
+                    }
+                }
         }
         mostrarDatePicker()
         setearRaddioButton()
@@ -53,40 +76,69 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
 
     fun guardar() {
 
-        val idUniversidad = txt_id_universidad.text.toString()
+        val idUniversidadtxt = txt_id_universidad.text.toString()
         val nombre = txt_nombre.text.toString()
         val fechaNac = txt_fecha_nacimiento.text.toString()
         val sexo = txt_sexo.text.toString()
         val estatura = txt_estatura.text.toString()
         val tieneBeca = txt_beca.text.toString()
 
-        val estudiante = Estudiante(
-            nombre,
-            Date(fechaNac),
-            sexo.single(),
-            estatura.toFloat(),
-            tieneBeca.toBoolean(),
-            idUniversidad.toInt()
+        val estudiante: MutableList<Pair<String, Any>> = mutableListOf(
+            "nombre" to nombre,
+            "fechaNacimiento" to fechaNac,
+            "sexo" to sexo,
+            "estatura" to estatura.toDouble(),
+            "tieneBeca" to tieneBeca.toInt(),
+            "universidad" to idUniversidadtxt.toInt()
         )
 
+
         if (idEstudiante == -1) {
-            ServicioBDD.aniadirEstudiante(estudiante)
-            mostrarToast("Estudiante ${nombre} creado correctamente")
+            ServicioBDD
+                .createOne("estudiante", estudiante)
+                .responseString { request, response, result ->
+                    when (result) {
+                        is Result.Success -> {
+                            runOnUiThread {
+                                val stringEstudiante = result.get()
+                                mostrarToast("Estudiante creado")
+                            }
+                        }
+                        is Result.Failure -> {
+                            val ex = result.getException()
+                            Log.i("http-klaxon", "Error http ${ex.message}")
+                        }
+                    }
+                }
         } else {
-            ServicioBDD.actualizarEstudiante(idEstudiante, estudiante)
-            mostrarToast("Estudiante ${nombre} actualizado correctamente")
+            ServicioBDD
+                .updateOne("estudiante", idEstudiante, estudiante)
+                .responseString { request, response, result ->
+                    when (result) {
+                        is Result.Success -> {
+                            runOnUiThread {
+                                val stringEstudiante = result.get()
+                                mostrarToast("Estudiante editado")
+                            }
+                        }
+                        is Result.Failure -> {
+                            val ex = result.getException()
+                            Log.i("http-klaxon", "Error http ${ex.message}")
+                        }
+                    }
+                }
         }
     }
 
     @SuppressLint("SetTextI18n")
     fun cargarConfiguracionInicial(estudiante: Estudiante) {
         txt_nombre.setText(estudiante.nombre)
-        txt_fecha_nacimiento.setText(transformarDataString(estudiante.fechaNacimiento))
+        txt_fecha_nacimiento.setText(estudiante.fechaNacimiento)
         txt_estatura.setText(estudiante.estatura.toString())
         rd_btn_masculino.isEnabled = false
         rd_btn_femenino.isEnabled = false
         btn_calendario.isEnabled = false
-        if (estudiante.sexo == "M".single()) {
+        if (estudiante.sexo == "M") {
             raddio_button_sexo.check(rd_btn_masculino.id)
             txt_sexo.setText("M")
         } else {
@@ -94,7 +146,7 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
             txt_sexo.setText("F")
         }
 
-        if (estudiante.tieneBeca) {
+        if (estudiante.tieneBeca == 1) {
             check_beca.setChecked(true)
         }
 
@@ -102,9 +154,14 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
 
 
     fun setearCheckbox() {
+//        ayuda_check.setText("0")
         check_beca.setOnClickListener {
             val tieneBeca = check_beca.isChecked()
-            txt_beca.setText("${tieneBeca}")
+            if (tieneBeca) {
+                txt_beca.setText("1")
+            } else {
+                txt_beca.setText("0")
+            }
         }
     }
 
@@ -148,7 +205,9 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
     fun transformarDataString(fecha: Date): String {
         val calendar = Calendar.getInstance()
         calendar.time = fecha
-        return "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH)}/${calendar.get(Calendar.YEAR)}"
+        return "${calendar.get(Calendar.DAY_OF_MONTH)}/${calendar.get(Calendar.MONTH)}/${calendar.get(
+            Calendar.YEAR
+        )}"
     }
 
     fun mostrarToast(text: String) {

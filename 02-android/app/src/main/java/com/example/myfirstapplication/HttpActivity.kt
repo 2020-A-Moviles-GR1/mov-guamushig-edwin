@@ -3,16 +3,10 @@ package com.example.myfirstapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.beust.klaxon.Converter
-import com.beust.klaxon.JsonValue
 import com.beust.klaxon.Klaxon
-import com.beust.klaxon.Parser
-import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import kotlinx.android.synthetic.main.activity_http.*
 import com.github.kittinunf.result.Result
-import java.util.*
-import kotlin.collections.ArrayList
 
 class HttpActivity : AppCompatActivity() {
     val url = "http://192.168.100.10:1337"
@@ -105,35 +99,36 @@ class HttpActivity : AppCompatActivity() {
 
         val existeRespuesta = respuesta?.size
 
-        if (existeRespuesta != 0) {
+        if (existeRespuesta != null) {
+            if (existeRespuesta > 0) {
 
-            respuesta?.forEach {
-                pokemon: Pokemon ->
-                when (pokemon.usuario) {
-                    is Int -> Log.i("http-klaxon", "${pokemon.usuario}")
-                    is UsuarioHttp -> {
-                        val usuario = pokemon.usuario as UsuarioHttp
-                        Log.i("http-klaxon", usuario.nombre)
+                respuesta.forEach { pokemon: Pokemon ->
+                    when (pokemon.usuario) {
+                        is Int -> Log.i("http-klaxon", "${pokemon.usuario}")
+                        is UsuarioHttp -> {
+                            val usuario = pokemon.usuario as UsuarioHttp
+                            Log.i("http-klaxon", usuario.nombre)
+                        }
                     }
                 }
+
+
+    //            val urlUsuario = "$url/usuario"
+    //            urlUsuario
+    //                .httpGet()
+    //                .responseString { request, response, result ->
+    //                    when (result) {
+    //                        is Result.Success -> {
+    //                            val data = result.get()
+    //                            Log.i("http-klaxon", "Ddatitos: ${data}")
+    //                        }
+    //                        is Result.Failure -> {
+    //                            val ex = result.getException()
+    //                            Log.i("http-klaxon", "Error http ${ex.message}")
+    //                        }
+    //                    }
+    //                }
             }
-
-
-//            val urlUsuario = "$url/usuario"
-//            urlUsuario
-//                .httpGet()
-//                .responseString { request, response, result ->
-//                    when (result) {
-//                        is Result.Success -> {
-//                            val data = result.get()
-//                            Log.i("http-klaxon", "Ddatitos: ${data}")
-//                        }
-//                        is Result.Failure -> {
-//                            val ex = result.getException()
-//                            Log.i("http-klaxon", "Error http ${ex.message}")
-//                        }
-//                    }
-//                }
         }
     }
 }
