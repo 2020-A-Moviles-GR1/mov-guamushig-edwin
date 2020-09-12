@@ -104,10 +104,11 @@ class HttpActivity : AppCompatActivity() {
 
                 respuesta.forEach { pokemon: Pokemon ->
                     when (pokemon.usuario) {
-                        is Int -> Log.i("http-klaxon", "${pokemon.usuario}")
+                        is Int ->
+                            Log.i("http-klaxon", "Usuario tipo int ${pokemon.usuario}")
                         is UsuarioHttp -> {
                             val usuario = pokemon.usuario as UsuarioHttp
-                            Log.i("http-klaxon", usuario.nombre)
+                            Log.i("http-klaxon", "Nombre usuario ${usuario.nombre}")
                         }
                     }
                 }
