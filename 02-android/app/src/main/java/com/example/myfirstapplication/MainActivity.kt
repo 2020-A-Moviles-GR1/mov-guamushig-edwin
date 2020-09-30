@@ -33,6 +33,30 @@ class MainActivity : AppCompatActivity() {
         btn_respuesta_propia.setOnClickListener {
             enviarIntentConRespuestaPropia()
         }
+
+        btn_http.setOnClickListener {
+            abrirActivityHttp()
+        }
+
+        btn_recylcer.setOnClickListener {
+            abrirRecyclerView()
+        }
+    }
+
+    fun abrirRecyclerView() {
+        val intentExplicito = Intent(
+            this,
+            RecyclerViewActivity::class.java
+        )
+        startActivity(intentExplicito)
+    }
+
+    fun abrirActivityHttp() {
+        val intentExplicito = Intent(
+            this,
+            HttpActivity::class.java
+        )
+        startActivity(intentExplicito)
     }
 
     fun enviarIntentConRespuestaPropia(){

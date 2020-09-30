@@ -5,15 +5,20 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class Estudiante(
+    var id: Int,
     var nombre: String,
-    var fechaNacimiento: Date,
-    var sexo: Char,
-    var estatura: Float,
-    var tieneBeca: Boolean,
-    var universidad: Int
+    var fechaNacimiento: String,
+    var sexo: String,
+    var estatura: Double,
+    var tieneBeca: Int,
+    var latitud: Double,
+    var longitud: Double,
+    var urlImagen: String,
+    var urlRedSocial: String,
+    var universidad: Universidad
 ) {
     override fun toString(): String {
-        return "${nombre} - ${calcularEdad(fechaNacimiento)}"
+        return "${nombre} - ${calcularEdad(Date(fechaNacimiento))}"
     }
 
     fun calcularEdad(fechaNac: Date): String {

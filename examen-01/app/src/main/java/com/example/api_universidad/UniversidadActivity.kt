@@ -3,20 +3,25 @@ package com.example.api_universidad
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isEmpty
+import androidx.appcompat.app.AppCompatActivity
+import com.beust.klaxon.Klaxon
+import com.github.kittinunf.result.Result
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.activity_crear_editar_universidad.*
 import kotlinx.android.synthetic.main.activity_universidad.*
 import kotlinx.android.synthetic.main.dialos_universidad.view.*
+
 
 class UniversidadActivity : AppCompatActivity() {
 
     private lateinit var adaptador: ArrayAdapter<Universidad>
+
+    private lateinit var listaUniversidades: ArrayList<Universidad>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,20 +31,37 @@ class UniversidadActivity : AppCompatActivity() {
         setearListaInicial()
 
         btn_nuevo.setOnClickListener {
-            irACrearUniversidad()
+            irACrearEditarUniversidad()
         }
 
 
     }
 
     fun setearListaInicial() {
-        val listaUniversidades = ServicioBDD.universidades
-        adaptador = ArrayAdapter(
-            this,
-            android.R.layout.simple_list_item_1,
-            listaUniversidades
-        )
-        list_view_universidades.adapter = adaptador
+        ServicioBDD.findAll("universidad")
+            .responseString { request, response, result ->
+                when (result) {
+                    is Result.Success -> {
+                        val stringUniversidades = result.get()
+                        val respuesta = Klaxon()
+                            .converter(ServicioBDD.convertirUniversidad)
+                            .parseArray<Universidad>(stringUniversidades)
+                        listaUniversidades = respuesta as ArrayList<Universidad>
+                        runOnUiThread {
+                            adaptador = ArrayAdapter(
+                                this,
+                                android.R.layout.simple_list_item_1,
+                                listaUniversidades
+                            )
+                            list_view_universidades.adapter = adaptador
+                        }
+                    }
+                    is Result.Failure -> {
+                        val ex = result.getException()
+                        Log.i("http-klaxon", "Error http ${ex.message}")
+                    }
+                }
+            }
     }
 
     fun cargarOpcionesListView() {
@@ -50,21 +72,22 @@ class UniversidadActivity : AppCompatActivity() {
         list_view_universidades.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 dialog.show()
+                val idUniversidad = listaUniversidades[position].id
                 mostrar.txt_editar.setOnClickListener {
-                    irACrearUniversidad(position)
+                    irACrearEditarUniversidad(idUniversidad)
                     dialog.dismiss()
                 }
                 mostrar.txt_eliminar.setOnClickListener {
-                    eliminarUniversidad(position)
+                    eliminarUniversidad(idUniversidad)
                     dialog.dismiss()
                 }
                 mostrar.txt_ver_mas.setOnClickListener {
-                    verMasInformacion(position)
+                    verMasInformacion(idUniversidad)
                     dialog.dismiss()
                 }
 
                 mostrar.txt_estudiantes.setOnClickListener {
-                    irAGestionEstudiantes(position)
+                    irAGestionEstudiantes(idUniversidad)
                     dialog.dismiss()
                 }
             }
@@ -80,12 +103,26 @@ class UniversidadActivity : AppCompatActivity() {
     }
 
     fun eliminarUniversidad(idUniversidad: Int) {
-        ServicioBDD.eliminarUniversidad(idUniversidad)
-        refrescarTabla(adaptador)
-        mostrarToast("Universidad eliminada")
+        ServicioBDD.deleteOne("universidad", idUniversidad)
+            .responseString { request, response, result ->
+                when (result) {
+                    is Result.Success -> {
+                        val respuesta = result.get()
+                        runOnUiThread {
+                            refrescarTabla(adaptador)
+                            setearListaInicial()
+                            mostrarToast("Universidad eliminada")
+                        }
+                    }
+                    is Result.Failure -> {
+                        val ex = result.getException()
+                        Log.i("http-klaxon", "Error http ${ex.message}")
+                    }
+                }
+            }
     }
 
-    fun irACrearUniversidad(idUniversidad: Int = -1) {
+    fun irACrearEditarUniversidad(idUniversidad: Int = -1) {
         val intentExplicito = Intent(
             this,
             CrearEditarUniversidadActivity::class.java
@@ -106,7 +143,7 @@ class UniversidadActivity : AppCompatActivity() {
             Activity.RESULT_OK -> {
                 when (requestCode) {
                     300 -> {
-                        refrescarTabla(adaptador)
+                        setearListaInicial()
                     }
                 }
             }
@@ -116,24 +153,45 @@ class UniversidadActivity : AppCompatActivity() {
     }
 
     fun verMasInformacion(idUniversidad: Int) {
-        val universidades = ServicioBDD.universidades
-        val universidad = universidades[idUniversidad]
-        val infoUniversidad = "Nombre: ${universidad.nombre}\n" +
-                "Categoria: ${universidad.categoria}\n" +
-                "Fundacion: ${universidad.fundacion}\n" +
-                "Estado: ${stringEstadoActivoInactivo(universidad.estado!!)}\n" +
-                "Tamanio campus: ${universidad.areaConstruccion}\n"
-        val mBuilder = AlertDialog.Builder(
-            this
-        )
-        mBuilder.setTitle("Informacion de universidad")
-        mBuilder.setMessage(infoUniversidad)
-        mBuilder.setNeutralButton("Aceptar") { dialog: DialogInterface?, which: Int ->
-            dialog?.cancel()
-        }
-        val dialog = mBuilder.create()
-        dialog.show()
+        ServicioBDD.findById("universidad", idUniversidad)
+            .responseString { request, response, result ->
+                when (result) {
+                    is Result.Success -> {
+                        val stringUniversidad = result.get()
+                        val universidad = Klaxon()
+                            .converter(ServicioBDD.convertirUniversidad)
+                            .parse<Universidad>(stringUniversidad)!!
+
+                        val infoUniversidad = "Nombre: ${universidad.nombre}\n" +
+                                "Categoria: ${universidad.categoria}\n" +
+                                "Fundacion: ${universidad.fundacion}\n" +
+                                "Estado: ${stringEstadoActivoInactivo(universidad.estado!!)}\n" +
+                                "Tamanio campus: ${universidad.areaConstruccion}\n"
+                                    .trimIndent()
+
+                        val mBuilder = AlertDialog.Builder(
+                            this
+                        )
+                        mBuilder.setTitle("Información de universidad")
+                        mBuilder.setMessage(infoUniversidad)
+                        mBuilder.setNeutralButton("Aceptar") { dialog: DialogInterface?, which: Int ->
+                            dialog?.cancel()
+                        }
+                        runOnUiThread {
+                            val dialog = mBuilder.create()
+                            dialog.show()
+                        }
+
+
+                    }
+                    is Result.Failure -> {
+                        val ex = result.getException()
+                        Log.i("http-klaxon", "Error http ${ex.message}")
+                    }
+                }
+            }
     }
+
 
     fun refrescarTabla(
         adaptador: ArrayAdapter<Universidad>
@@ -145,8 +203,8 @@ class UniversidadActivity : AppCompatActivity() {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
-    fun stringEstadoActivoInactivo(estado: Boolean): String {
-        if (!estado) {
+    fun stringEstadoActivoInactivo(estado: Int): String {
+        if (estado == 0) {
             return "Inativo"
         }
         return "Activo"

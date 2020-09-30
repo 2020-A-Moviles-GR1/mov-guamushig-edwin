@@ -3,18 +3,18 @@ package com.example.api_universidad
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.activity_crear_editar_estudiante.*
+import com.beust.klaxon.Klaxon
 import kotlinx.android.synthetic.main.activity_crear_editar_universidad.*
 import kotlinx.android.synthetic.main.activity_crear_editar_universidad.btn_cancelar
 import kotlinx.android.synthetic.main.activity_crear_editar_universidad.btn_guardar
+import com.github.kittinunf.result.Result
+
 
 class CrearEditarUniversidadActivity : AppCompatActivity() {
 
@@ -27,11 +27,28 @@ class CrearEditarUniversidadActivity : AppCompatActivity() {
 
         idUniversidad = intent.getIntExtra("id", -1)
 
-        setearCheckbox()
-
         if (idUniversidad != -1) {
-            val universidad: Universidad = ServicioBDD.universidades[idUniversidad]
-            llenarCamposEditar(universidad)
+            ServicioBDD
+                .findById("universidad", idUniversidad)
+                .responseString { request, response, result ->
+                    when (result) {
+                        is Result.Success -> {
+                            val stringUniversidade = result.get()
+                            val respuesta = Klaxon()
+                                .converter(ServicioBDD.convertirUniversidad)
+                                .parse<Universidad>(stringUniversidade)
+                            val universidad = respuesta as Universidad
+                            runOnUiThread {
+                                setearCheckbox(universidad.estado!!)
+                                llenarCamposEditar(universidad)
+                            }
+                        }
+                        is Result.Failure -> {
+                            val ex = result.getException()
+                            Log.i("http-klaxon", "Error http ${ex.message}")
+                        }
+                    }
+                }
         }
 
         btn_modal_categoria.setOnClickListener {
@@ -54,20 +71,56 @@ class CrearEditarUniversidadActivity : AppCompatActivity() {
     }
 
     fun guardarUniversidad() {
+        Log.i("http-kl", "Creando universidad")
+
         val nombre = plain_txt_nombre.text.toString()
         val categoria = txt_categoria.text.toString()
         val fundacion = plain_txt_fundacion.text.toString()
         val area = plain_text_area.text.toString()
         val estado = ayuda_check.text.toString()
-        val universidad =
-            Universidad(nombre, fundacion.toInt(), categoria.single(), area.toFloat())
+        val universidad: MutableList<Pair<String, Any>> = mutableListOf(
+            "nombre" to nombre,
+            "categoria" to categoria,
+            "fundacion" to fundacion.toInt(),
+            "areaConstruccion" to area.toDouble()
+        )
         if (idUniversidad == -1) {
-            ServicioBDD.aniadirUniversidad(universidad)
-            mostrarToast("Universidad ${nombre} creada")
+            ServicioBDD
+                .createOne("universidad", universidad)
+                .responseString { request, response, result ->
+                    when (result) {
+                        is Result.Success -> {
+                            runOnUiThread {
+                                val stringUniversidade = result.get()
+                                Log.i("http-kl", stringUniversidade)
+                                mostrarToast("Universidad creada")
+                            }
+                        }
+                        is Result.Failure -> {
+                            val ex = result.getException()
+                            Log.i("http-klaxon", "Error http ${ex.message}")
+                        }
+                    }
+                }
         } else {
-            universidad.estado = estado.toBoolean()
-            ServicioBDD.actualizarUniversidad(idUniversidad, universidad)
-            mostrarToast("Universidad ${nombre} editada")
+            universidad.add("estado" to estado.toInt())
+            ServicioBDD
+                .updateOne("universidad", idUniversidad, universidad)
+                .responseString { request, response, result ->
+                    when (result) {
+                        is Result.Success -> {
+                            runOnUiThread {
+                                val stringUniversidade = result.get()
+                                Log.i("http-kl", stringUniversidade)
+                                mostrarToast("Universidad editada")
+                            }
+                        }
+                        is Result.Failure -> {
+                            val ex = result.getException()
+                            Log.i("http-klaxon", "Error http ${ex.message}")
+                        }
+                    }
+                }
         }
     }
 
@@ -102,21 +155,28 @@ class CrearEditarUniversidadActivity : AppCompatActivity() {
         titulo_check.visibility = View.VISIBLE
         check_estado.visibility = View.VISIBLE
 
-        if (universidad.estado!!) {
+        if (universidad.estado == 1) {
             check_estado.setChecked(true)
         }
     }
 
-    fun setearCheckbox() {
+    fun setearCheckbox(estado: Int) {
+        if (estado == 1) {
+            ayuda_check.setText("1")
+        } else {
+            ayuda_check.setText("0")
+        }
         check_estado.setOnClickListener {
             val estado = check_estado.isChecked()
-            ayuda_check.setText("${estado}")
+            if (estado) {
+                ayuda_check.setText("1")
+            } else {
+                ayuda_check.setText("0")
+            }
         }
     }
 
     fun mostrarToast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
-
-
 }
