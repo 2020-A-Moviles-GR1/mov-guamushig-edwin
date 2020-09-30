@@ -3,6 +3,7 @@ package com.example.api_universidad
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.Instrumentation
 import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.util.Log
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.beust.klaxon.Klaxon
 import kotlinx.android.synthetic.main.activity_crear_editar_estudiante.*
 import java.util.*
@@ -17,7 +19,6 @@ import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.activity_crear_editar_estudiante.btn_cancelar
 import kotlinx.android.synthetic.main.activity_crear_editar_estudiante.btn_guardar
 import kotlinx.android.synthetic.main.activity_crear_editar_estudiante.txt_nombre
-import kotlinx.android.synthetic.main.activity_crear_editar_universidad.*
 
 
 class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
@@ -27,6 +28,10 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
     private var dia = 0
     private var mes = 0
     private var anio = 0
+    private var latitud = 0.0
+    private var longitud = 0.0
+    private var urlImagen = ""
+    private var urlRedSocial = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +77,39 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
         btn_cancelar.setOnClickListener {
             finish()
         }
+
+        btn_ubicacion.setOnClickListener {
+            irAMapaEstudiante()
+        }
+    }
+
+    fun irAMapaEstudiante() {
+        val intent = Intent(
+            this,
+            MapaActivity::class.java
+        )
+        Log.i("latitud", "$latitud")
+        if (idEstudiante != -1) {
+            intent.putExtra("longitud", longitud)
+            intent.putExtra("latitud", latitud)
+            intent.putExtra("urlImagen", urlImagen)
+            intent.putExtra("urlRedSocial", urlRedSocial)
+        }
+        startActivityForResult(intent, 300)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                when (requestCode) {
+                    300 -> {
+                        latitud = data?.getDoubleExtra("latitud", 0.0)!!
+                        longitud = data.getDoubleExtra("longitud", 0.0)
+                    }
+                }
+            }
+        }
     }
 
     fun guardar() {
@@ -82,6 +120,8 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
         val sexo = txt_sexo.text.toString()
         val estatura = txt_estatura.text.toString()
         val tieneBeca = txt_beca.text.toString()
+        val urlImagenPerfil = txt_url_foto_perfil.text.toString()
+        val urlFacebook = txt_red_social.text.toString()
 
         val estudiante: MutableList<Pair<String, Any>> = mutableListOf(
             "nombre" to nombre,
@@ -89,6 +129,10 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
             "sexo" to sexo,
             "estatura" to estatura.toDouble(),
             "tieneBeca" to tieneBeca.toInt(),
+            "latitud" to latitud,
+            "longitud" to longitud,
+            "urlImagen" to urlImagenPerfil,
+            "urlRedSocial" to urlFacebook,
             "universidad" to idUniversidadtxt.toInt()
         )
 
@@ -132,9 +176,15 @@ class CrearEditarEstudianteActivity : AppCompatActivity(), DatePickerDialog.OnDa
 
     @SuppressLint("SetTextI18n")
     fun cargarConfiguracionInicial(estudiante: Estudiante) {
+        latitud = estudiante.latitud
+        longitud = estudiante.longitud
         txt_nombre.setText(estudiante.nombre)
         txt_fecha_nacimiento.setText(estudiante.fechaNacimiento)
         txt_estatura.setText(estudiante.estatura.toString())
+        txt_url_foto_perfil.setText(estudiante.urlImagen)
+        txt_red_social.setText(estudiante.urlRedSocial)
+        urlImagen = estudiante.urlImagen
+        urlRedSocial = estudiante.urlRedSocial
         rd_btn_masculino.isEnabled = false
         rd_btn_femenino.isEnabled = false
         btn_calendario.isEnabled = false

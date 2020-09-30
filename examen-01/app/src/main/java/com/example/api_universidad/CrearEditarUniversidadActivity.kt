@@ -27,7 +27,6 @@ class CrearEditarUniversidadActivity : AppCompatActivity() {
 
         idUniversidad = intent.getIntExtra("id", -1)
 
-
         if (idUniversidad != -1) {
             ServicioBDD
                 .findById("universidad", idUniversidad)
@@ -162,7 +161,7 @@ class CrearEditarUniversidadActivity : AppCompatActivity() {
     }
 
     fun setearCheckbox(estado: Int) {
-        if(estado == 1) {
+        if (estado == 1) {
             ayuda_check.setText("1")
         } else {
             ayuda_check.setText("0")
@@ -180,5 +179,4 @@ class CrearEditarUniversidadActivity : AppCompatActivity() {
     fun mostrarToast(text: String) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
-
 }

@@ -11,6 +11,10 @@ class Estudiante(
     var sexo: String,
     var estatura: Double,
     var tieneBeca: Int,
+    var latitud: Double,
+    var longitud: Double,
+    var urlImagen: String,
+    var urlRedSocial: String,
     var universidad: Universidad
 ) {
     override fun toString(): String {

@@ -68,6 +68,10 @@ class ServicioBDD {
                         jsonValue.objString("sexo"),
                         jsonValue.objInt("estatura").toDouble(),
                         jsonValue.objInt("tieneBeca"),
+                        jsonValue.objString("latitud").toDouble(),
+                        jsonValue.objString("longitud").toDouble(),
+                        jsonValue.objString("urlImagen"),
+                        jsonValue.objString("urlRedSocial"),
                         it
                     )
                 }

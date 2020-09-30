@@ -3,7 +3,6 @@ package com.example.api_universidad
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +14,9 @@ class MainActivity : AppCompatActivity() {
 
         universidad_view.setOnClickListener {
             irAUniversidad()
+//            irAMapaEstudiante()
         }
+
     }
 
     fun irAUniversidad() {

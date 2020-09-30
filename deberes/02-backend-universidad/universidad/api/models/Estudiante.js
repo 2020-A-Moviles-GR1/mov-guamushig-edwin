@@ -46,6 +46,26 @@ module.exports = {
       required: false,
       defaultsTo: 1
     },
+    latitud: {
+      columnName: 'latitud',
+      type: 'string',
+      required: true
+    },
+    longitud: {
+      columnName: 'longitud',
+      type: 'string',
+      required: true
+    },
+    urlImagen: {
+      columnName: 'urlImagen',
+      type: 'string',
+      required: true
+    },
+    urlRedSocial: {
+      columnName: 'urlRedSocial',
+      type: 'string',
+      required: true
+    },
     universidad: {
       model: 'universidad',
       required: true

@@ -55,6 +55,7 @@ class EstudianteActivity : AppCompatActivity() {
                             .converter(ServicioBDD.convertirEstudiante)
                             .parseArray<Estudiante>(stringEstudiantes)
                         listaEstudiantes = respuesta as ArrayList<Estudiante>
+
                         runOnUiThread {
                             adaptador = ArrayAdapter(
                                 this,
